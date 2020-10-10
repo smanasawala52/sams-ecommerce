@@ -1,0 +1,1 @@
+mysqldump -u root -p salesmanager > D:\AMS-Ecommerce\sams\salesmanager.sql

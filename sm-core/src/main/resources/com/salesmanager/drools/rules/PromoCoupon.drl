@@ -1,0 +1,59 @@
+package com.salesmanager.drools.rules;
+
+import com.salesmanager.core.business.modules.order.total.OrderTotalInputParameters;
+
+global com.salesmanager.core.business.modules.order.total.OrderTotalResponse total;
+
+dialect  "mvel"
+
+
+rule "Bam0520"
+    when
+        OrderTotalInputParameters(promoCode == 'Bam0520')
+        OrderTotalInputParameters(date < "31-Oct-2020")
+    then
+        total.setDiscount(0.10);
+end
+
+rule "Bam0530"
+    when
+        OrderTotalInputParameters(promoCode == 'Bam0530')
+        OrderTotalInputParameters(date < "31-Oct-2020")
+    then
+        total.setDiscount(0.20);
+end
+
+
+rule "BOGO_1"
+    when
+        OrderTotalInputParameters(productSKU == "SHOFBM672S6KJ58Y")
+        OrderTotalInputParameters(date < "31-Oct-2020")
+    then
+        total.setDiscount(null);
+        total.setFlagBOGO(true);
+        total.setQuantity(1);
+         total.setProductSKU("SHOFBM672S6KJ58Y");
+end
+
+rule "BOGO_2"
+    when
+        OrderTotalInputParameters(productSKU == "NK019")
+        OrderTotalInputParameters(date < "31-Oct-2020")
+    then
+        total.setDiscount(null);
+        total.setFlagBOGO(true);
+        total.setQuantity(2);
+        total.setProductSKU("NK019");
+end
+rule "BOGO_3"
+    when
+        OrderTotalInputParameters(productSKU == "NK022")
+        OrderTotalInputParameters(quantity >= 2)
+        OrderTotalInputParameters(date < "31-Oct-2020")
+    then
+        total.setDiscount(null);
+        total.setFlagBOGO(true);
+        total.setQuantity(1);
+        total.setProductSKU("NK022");
+end
+
