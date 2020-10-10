@@ -82,17 +82,19 @@ public class PromoCodeCalculatorModule implements OrderTotalPostProcessorModule 
 					inputParameters.setItemCategoryCode(cat.getCode());
 				}
 			}
+			if(product.getManufacturer()!=null) {
+				inputParameters.setItemManufacturerCode(product.getManufacturer().getCode());
+			}
+			inputParameters.setProductSKU(product.getSku());
 		}
-		inputParameters.setItemManufacturerCode(product.getManufacturer().getCode());
 		inputParameters.setQuantity(shoppingCartItem.getQuantity());
-		inputParameters.setProductSKU(product.getSku());
 
 		
         kieSession.insert(inputParameters);
         kieSession.setGlobal("total",resp);
         kieSession.fireAllRules();
 
-        if(resp.isFlagBOGO() && ((resp.getProductId() > 0 && resp.getProductId() == product.getId()) || 
+        if(product!=null && resp.isFlagBOGO() && ((resp.getProductId() > 0 && resp.getProductId() == product.getId()) || 
         		(resp.getProductSKU()!="" && !resp.getProductSKU().isEmpty() && resp.getProductSKU().equalsIgnoreCase(product.getSku())))) {
 			OrderTotal orderTotal = null;
 			// shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() * resp.getQuantity());
