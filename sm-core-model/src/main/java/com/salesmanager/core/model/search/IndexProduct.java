@@ -1,10 +1,15 @@
 package com.salesmanager.core.model.search;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
+
+import com.salesmanager.core.model.catalog.product.attribute.ProductAttribute;
+import com.salesmanager.core.model.catalog.product.attribute.ProductOptionValueDescription;
 
 public class IndexProduct implements JSONAware {
 	
@@ -19,6 +24,7 @@ public class IndexProduct implements JSONAware {
 	private String store;
 	private String lang;
 	private String id;//required by the search framework
+	private Set<ProductAttribute> attributes = new HashSet<ProductAttribute>();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -51,8 +57,31 @@ public class IndexProduct implements JSONAware {
 			}
 			obj.put("tags", tagsArray);
 		}
-		
-		return obj.toJSONString();
+		if(attributes!=null) {
+			System.out.println("product attr-----------Start-----"+id);
+			for(ProductAttribute attribute:attributes) {
+				System.out.println("attribute: "+attribute);
+				System.out.println("attribute Code: "+attribute.getProductOption().getCode());
+				if(attribute!=null) {
+					JSONArray attributeArray = new JSONArray();
+					System.out.println("attribute.getProductOptionValue(): "+attribute.getProductOptionValue());
+					System.out.println("attribute.getProductOptionValue().getDescriptions(): "+attribute.getProductOptionValue().getDescriptions());
+					for(ProductOptionValueDescription desc : attribute.getProductOptionValue().getDescriptions()) {
+						System.out.println("desc: "+desc);
+						System.out.println("desc: "+desc.getId()+" :: "+desc.getDescription()+" :: "+desc.getName()
+						+" :: "+desc.getTitle()+" :: "+desc.getLanguage().getId());
+						if(desc.getLanguage().getCode().equalsIgnoreCase(lang)) {
+							attributeArray.add(desc.getName().trim());
+						}
+					}
+					obj.put(attribute.getProductOption().getCode().trim(), attributeArray);
+				}
+			}
+			System.out.println("product attr-----------End-----");
+		}
+		String result = obj.toJSONString();
+		System.out.println("json: " + result);
+		return result;
 
 	}
 
@@ -143,6 +172,13 @@ public class IndexProduct implements JSONAware {
 
 	public String getManufacturer() {
 		return manufacturer;
+	}
+	public Set<ProductAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Set<ProductAttribute> attributes) {
+		this.attributes = attributes;
 	}
 
 }

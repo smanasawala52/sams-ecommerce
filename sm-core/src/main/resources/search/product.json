@@ -26,6 +26,15 @@
 		},
 		"price": {
 			"type": "float"
+		},
+		"color": {
+			"type": "keyword"
+		},
+		"brand": {
+			"type": "keyword"
+		},
+		"size": {
+			"type": "keyword"
 		}
 	}
 }

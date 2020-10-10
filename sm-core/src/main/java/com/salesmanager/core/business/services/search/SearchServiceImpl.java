@@ -118,6 +118,9 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 			index.setAvailable(product.isAvailable());
 			index.setDescription(description.getDescription());
 			index.setName(description.getName());
+			if(product.getAttributes()!=null) {
+				index.setAttributes(product.getAttributes());
+			}
 			if(product.getManufacturer()!=null) {
 				index.setManufacturer(String.valueOf(product.getManufacturer().getId()));
 			}
@@ -231,6 +234,7 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 		
 						//Map<String,Object> metaEntries = hit.getMetaEntries();
 						Map<String,Object> metaEntries = hit.getItem();
+						System.out.println("metaEntries: " + metaEntries);
 						IndexProduct indexProduct = new IndexProduct();
 
 						Object desc = metaEntries.get("description");
@@ -272,6 +276,7 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 					if(facets!=null && facets.size() > 0) {
 						Map<String,List<SearchFacet>> searchFacets = new HashMap<String,List<SearchFacet>>();
 						for(String key : facets.keySet()) {
+							System.out.println(key);
 							
 							Facet f = facets.get(key);
 							List<com.sams.search.services.Entry> ent = f.getEntries();
@@ -279,13 +284,14 @@ public class SearchServiceImpl implements com.salesmanager.core.business.service
 							//List<FacetEntry> f = facets.get(key);
 							
 							List<SearchFacet> fs = searchFacets.get(key);
+							System.out.println(fs);
 							if(fs==null) {
 								fs = new ArrayList<SearchFacet>();
 								searchFacets.put(key, fs);
 							}
 		
 							for(com.sams.search.services.Entry facetEntry : ent) {
-							
+								System.out.println(facetEntry.getName()+" :: "+facetEntry.getCount());
 								SearchFacet searchFacet = new SearchFacet();
 								searchFacet.setKey(facetEntry.getName());
 								searchFacet.setName(facetEntry.getName());

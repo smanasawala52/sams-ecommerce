@@ -45,6 +45,10 @@
 			<list>
 				<value>categories</value>
 				<value>manufacturer</value>
+				<value>brand</value>
+				<value>color</value>				
+				<value>size</value>
+				<value>price</value>
 			</list>
 		</property>
 	</bean>

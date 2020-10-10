@@ -128,8 +128,50 @@ response.setDateHeader ("Expires", -1);
 				$('#categoryLabel').hide();
 			}
 			
-
-
+			//facets
+			if(productList.manuFacturerFacets!=null && productList.manuFacturerFacets.length>0) {	
+				$('#manufacturerLabel').show();
+				for (var i = 0; i < productList.manuFacturerFacets.length; i++) {
+					var manuFacturerFacets = '<li><a>' + productList.manuFacturerFacets[i].description.name;
+					if(productList.manuFacturerFacets[i].productCount>0) {
+						manuFacturerFacets = manuFacturerFacets + '&nbsp;<span class="countItems">(' + productList.manuFacturerFacets[i].productCount + ')</span>'
+					}
+					manuFacturerFacets = manuFacturerFacets + '</a></li>';
+					$('#manuFacturerFacets').append(manuFacturerFacets);
+				}
+			} else {
+				$('#manufacturerLabel').hide();
+			}
+			//facets
+// 			 <h3 id="manufacturerLabel"><s:message code="label.manufacturer.title" text="Collections"/></h3>
+//         			            <ul id="manuFacturerFacets" class="nav nav-list"></ul>
+			try{
+				Object.keys(productList.attributesFacets).forEach(function(key) {
+				    var value = productList.attributesFacets[key];
+				   // console.log(key+":: "+ key.description.name);
+				    console.log(value);
+				    if(value.length>0){
+				    	var newfacetLabel = "<h3 id='"+key+"Label'>"+key+"</h3>";
+				    	$('#factesList').append(newfacetLabel);
+				    	console.log(newfacetLabel);
+				    	var newfacetList = '<ul class="nav nav-list">';
+					    for (var i = 0; i < value.length; i++) {
+					    	console.log(value[i]);
+					    	var val = '<li><a>' + value[i].description.name;
+							if(value[i].productCount>0) {
+								val = val + '&nbsp;<span class="countItems">(' + value[i].productCount + ')</span>'
+							}
+							val = val + '</a></li>';
+					    	newfacetList = newfacetList + val;
+					    }
+				    	newfacetList = newfacetList + '</ul>';
+					    $('#factesList').append(newfacetList);
+				    }
+				});
+			}catch(err){
+				console.log(err);
+			}
+			
 	}
  
  
@@ -176,10 +218,13 @@ response.setDateHeader ("Expires", -1);
 								</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" id="factesList">
 								<h3 id="categoryLabel"><s:message code="label.categories.title" text="Categories"/></h3>
         			            <ul id="categoriesFacets" class="nav nav-list"></ul>
+        			            <h3 id="manufacturerLabel"><s:message code="label.manufacturer.title" text="Collections"/></h3>
+        			            <ul id="manuFacturerFacets" class="nav nav-list"></ul>
 					</div>
+					
 				</div>
 			</div>
 		</div>

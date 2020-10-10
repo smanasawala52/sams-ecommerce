@@ -10,6 +10,7 @@ public class ReadableProductOptionValue extends ProductOptionValue {
 	private String price;
 	private String image;
 	private String name;
+	private int productCount;
 
 
 	public String getName() {
@@ -34,6 +35,14 @@ public class ReadableProductOptionValue extends ProductOptionValue {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public int getProductCount() {
+		return productCount;
+	}
+
+	public void setProductCount(int productCount) {
+		this.productCount = productCount;
 	}
 
 }
